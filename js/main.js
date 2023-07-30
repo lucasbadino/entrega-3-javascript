@@ -3,6 +3,7 @@ let autos = []
 let prod = []
 let carrito = []
 let storagge_carrito = []
+const clave = "carrito"
 
 
 // usuarios.push(new User("lucas", "lucas123", "badino", 26, "lucas@gmail.com"))
@@ -33,6 +34,7 @@ autos.push(new Auto(autos.length + 1, "Peugeot", "207 hdi allure", 2016, 1980000
 
 
 mostrar_autos(autos)
+alert_storage()
 agregar_autos()
 buscar()
 
@@ -115,10 +117,10 @@ function agregar(auto) {
 
         carrito.push(auto)
     }
-    toasty("Agregado Exitosamente",1000)
+    toasty("Agregado Exitosamente", 1000)
     recorrer_carrito()
 }
-function eliminar(id){
+function eliminar(id) {
     let con = false
     swal({
         title: "Estas seguro?",
@@ -126,45 +128,47 @@ function eliminar(id){
         icon: "warning",
         buttons: true,
         dangerMode: true,
-      })
-      .then((willDelete) => {
-        if (willDelete) {
-          swal("Eliminaste el vehiculo del carrito", {
-            icon: "success",
-            
-          });
-          let exist = carrito.some(p => p.id == id)
-          carrito.forEach(e => {
-              if (e.cantidad <= 1 ){
-              carrito = carrito.filter(e => e.id != id)
-          }
-          })
-          
-          if (exist) {
-              carrito.map(p => {
-                  if (p.id == id) {
-                      p.cantidad--
-                      return p;
-                  } else {
-                      return p;
-                  }
-              })
-      
-          } 
-          recorrer_carrito()
-        
-          
-        } else {
-          swal("Conservaste el vehiculo");
-        }
-        con = false
-      });
-       
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+                swal("Eliminaste el vehiculo del carrito", {
+                    icon: "success",
+
+                });
+                let exist = carrito.some(p => p.id == id)
+                carrito.forEach(e => {
+                    if (e.cantidad <= 1) {
+                        carrito = carrito.filter(e => e.id != id)
+                    }
+                })
+
+                if (exist) {
+                    carrito.map(p => {
+                        if (p.id == id) {
+                            p.cantidad--
+                            return p;
+                        } else {
+                            return p;
+                        }
+                    })
+
+                }
+                recorrer_carrito()
+
+
+            } else {
+                swal("Conservaste el vehiculo");
+            }
+            con = false
+        });
+
 }
 
 function recorrer_carrito() {
     let cantidad = 0
-
+    if (carrito.length == 0) {
+        localStorage.clear(clave)
+    }
     let div = document.querySelector("#carr")
     while (div.firstChild) {
         div.removeChild(div.firstChild)
@@ -174,10 +178,10 @@ function recorrer_carrito() {
         cantidad += e.cantidad
         let div = document.querySelector("#carr")
         let elem = document.createElement("div")
-        elem.id = "prod"+e.id
-        
+        elem.id = "prod" + e.id
+
         storagge_carrito.push(e)
-        add_storagge("carrito",storagge_carrito)
+        add_storagge(clave, storagge_carrito)
         elem.innerHTML = `
             <div class="d-flex flex-row align-items-center"><span class="text-black-50"></span>
             <div class="price ml-2"><span class="mr-1"></span><i class="fa fa-angle-down"></i>
@@ -214,10 +218,10 @@ function suma_totales() {
             suma_total += parseInt(e.precio)
         }
     })
-   
-    let total = document.querySelector("#total") 
+
+    let total = document.querySelector("#total")
     let elem1 = document.createElement("p")
-    while(total.firstChild){
+    while (total.firstChild) {
         total.removeChild(total.firstChild)
     }
     elem1.innerHTML = `Total $ ${suma_total}`
@@ -228,7 +232,7 @@ function suma_totales() {
     // tex.innerHTML = `Tienes ${cantidad} productos en tu carrito`
     // canti.appendChild(tex)
 
-    
+
 }
 
 function buscar() {
@@ -243,15 +247,43 @@ function buscar() {
     })
 }
 
-function add_storagge(clave,item){
+function add_storagge(clave, item) {
     localStorage.clear(clave)
     let json = JSON.stringify(item)
     localStorage.setItem(clave, json)
 }
 
-function toasty(text, time){
+function toasty(text, time) {
     Toastify({
         text: text,
         duration: time,
     }).showToast();
+}
+function alert_storage() {
+    let cant = 0
+    let local = []
+    if (localStorage.length) {
+        local = localStorage.getItem(clave)
+        local = JSON.parse(local)
+        local.forEach(e => {
+            cant++
+            console.log(local)
+        })
+        swal({
+            title: "Tienes Articulos En El Carrito",
+            text: `Dejaste ${cant} sin comprar, deseas acceder al carrito?`,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    local.forEach(e => {
+                        carrito.push(e)
+                        recorrer_carrito()
+                    })
+                }
+            })
+    }
+
 }
