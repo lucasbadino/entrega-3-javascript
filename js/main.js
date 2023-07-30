@@ -2,6 +2,7 @@
 let autos = []
 let prod = []
 let carrito = []
+let storagge_carrito = []
 
 
 // usuarios.push(new User("lucas", "lucas123", "badino", 26, "lucas@gmail.com"))
@@ -52,10 +53,7 @@ function agregar_autos() {
         let precio = document.querySelector("#precio").value
         let imagen = document.querySelector("#imagen").value
         autos.push(new Auto(autos.length + 1, marca, modelo, anio, precio, imagen))
-        Toastify({
-            text: "Creacion Exitosa",
-            duration: 600,
-        }).showToast();
+        toasty("Creacion Exitosa", 800)
         mostrar_autos(autos)
     })
 
@@ -101,29 +99,6 @@ function traer_item(id) {
 
 }
 
-function eliminar(id){
-    let exist = carrito.some(p => p.id == id)
-    carrito.forEach(e => {
-        if (e.cantidad <= 1 ){
-        carrito = carrito.filter(e => e.id != id)
-    }
-    })
-    
-    if (exist) {
-        carrito.map(p => {
-            if (p.id == id) {
-                p.cantidad--
-                return p;
-            } else {
-                return p;
-            }
-        })
-
-    } 
-    recorrer_carrito()
-
-}
-
 function agregar(auto) {
     let exist = carrito.some(p => p.id == auto.id)
     if (exist) {
@@ -140,8 +115,53 @@ function agregar(auto) {
 
         carrito.push(auto)
     }
+    toasty("Agregado Exitosamente",1000)
     recorrer_carrito()
 }
+function eliminar(id){
+    let con = false
+    swal({
+        title: "Estas seguro?",
+        text: "Vas a eliminar el vehiculo del carrito",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          swal("Eliminaste el vehiculo del carrito", {
+            icon: "success",
+            
+          });
+          let exist = carrito.some(p => p.id == id)
+          carrito.forEach(e => {
+              if (e.cantidad <= 1 ){
+              carrito = carrito.filter(e => e.id != id)
+          }
+          })
+          
+          if (exist) {
+              carrito.map(p => {
+                  if (p.id == id) {
+                      p.cantidad--
+                      return p;
+                  } else {
+                      return p;
+                  }
+              })
+      
+          } 
+          recorrer_carrito()
+        
+          
+        } else {
+          swal("Conservaste el vehiculo");
+        }
+        con = false
+      });
+       
+}
+
 function recorrer_carrito() {
     let cantidad = 0
 
@@ -149,12 +169,15 @@ function recorrer_carrito() {
     while (div.firstChild) {
         div.removeChild(div.firstChild)
     }
-    console.log(div)
+    storagge_carrito = []
     carrito.forEach(e => {
         cantidad += e.cantidad
         let div = document.querySelector("#carr")
         let elem = document.createElement("div")
         elem.id = "prod"+e.id
+        
+        storagge_carrito.push(e)
+        add_storagge("carrito",storagge_carrito)
         elem.innerHTML = `
             <div class="d-flex flex-row align-items-center"><span class="text-black-50"></span>
             <div class="price ml-2"><span class="mr-1"></span><i class="fa fa-angle-down"></i>
@@ -169,7 +192,7 @@ function recorrer_carrito() {
             </div>
             <a href="javascript:eliminar(${e.id})">-</a><a href="#" class="border">${e.cantidad}</a><a href="javascript:traer_item(${e.id})">+</a>
             <div class="d-flex flex-row align-items-center"><span
-            class="d-block ml-5 font-weight-bold">$${e.precio}</span><i
+            class="d-block ml-5 font-weight-bold">$${e.precio * e.cantidad}</span><i
             class="fa fa-trash-o ml-3 text-black-50"></i></div>
             </div>
                         `
@@ -220,5 +243,15 @@ function buscar() {
     })
 }
 
+function add_storagge(clave,item){
+    localStorage.clear(clave)
+    let json = JSON.stringify(item)
+    localStorage.setItem(clave, json)
+}
 
-
+function toasty(text, time){
+    Toastify({
+        text: text,
+        duration: time,
+    }).showToast();
+}
