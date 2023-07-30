@@ -14,7 +14,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
-            <a class="navbar-brand" href="./index.html">BADINO</a>
+            <a class="navbar-brand" href="./index.html">INICIO</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -25,79 +25,20 @@
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
             </form>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item dropdown cart">
-                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <img src="https://images.vexels.com/media/users/3/132114/isolated/preview/5367202ad4dd11725544cb3008049f96-icono-plano-de-carrito-de-compras.png"
-                                alt="" class="img">
-                        </a>
-
-                    </li>
-                </ul>
+                <h5 id= "usuario"></h5>
             </div>
         </nav>
     </header>
 
-    <main>
-        <!-- <form class="form-login">
-            <div class="form-outline mb-2 text-center">
-                <input id="user" type="text" id="form2Example1" class="form-control" />
-                <label class="form-label" for="form2Example1">Usuario</label>
-            </div>
-            <div class="form-outline mb-4 text-center">
-                <input id="pass" type="password" id="form2Example2" class="form-control" />
-                <label class="form-label" for="form2Example2">Contraseña</label>
-            </div>
-            <div class="row mb-4">
-                <div class="col d-flex justify-content-center">
-                </div>
-                <button id="button" type="button" class="btn btn-primary btn-block mb-4">Ingresar</button>
-        </form> -->
+    <main id="main">
+        <div id="ocultar">
+            <h1 class="text-center">Inicia secion para ingresar al sistema</h1>
+            <br>
+            <button id="button" type="button" class="btn btn-primary btn-block mb-1">Ingresar</button>
+        </div>
 
 
-        <div id="div" class="d-flex">
 
-        </div>
-        <h1 class="text-center"> Agregar un vehiculo</h1>
-        <div class="div-form">
-            <div class="input-group mb-3 ">
-                <input id="marca" type="text" class="form-control" placeholder="Marca" aria-label="Username"
-                    aria-describedby="basic-addon1">
-            </div>
-            <div class="input-group mb-3 ">
-                <input id="modelo" type="text" class="form-control" placeholder="Modelo" aria-label="Username"
-                    aria-describedby="basic-addon1">
-            </div>
-            <div class="input-group mb-3 ">
-                <input id="anio" type="number" class="form-control" placeholder="año" aria-label="Username"
-                    aria-describedby="basic-addon1">
-            </div>
-            <div class="input-group mb-3 ">
-                <input id="precio" type="number" class="form-control" placeholder="precio" aria-label="Username"
-                    aria-describedby="basic-addon1">
-            </div>
-            <div class="input-group mb-3 ">
-                <input id="imagen" type="text" class="form-control" placeholder="imagen (colocar url)"
-                    aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-            <button id="btn-form" type="submit" class="btn btn-primary">Crear</button>
-        </div>
-        <div class="container mt-5 p-3 rounded cart1">
-            <div class="col-md-15">
-                <h6 class="mb-0">Carrito</h6>
-                <div class="d-flex justify-content-between"><span>
-                        <div id="can"> </div>
-                    </span></div>
-                <div id="carr" class="product-details mr-2">
-                    <div class="d-flex flex-row align-items-center"><i class="fa fa-long-arrow-left"></i><span
-                            class="ml-2">Continuar Compra</span></div>
-                    <hr>
-                </div>
-                <div id="total" class="text-center">
-                </div>
-            </div>
-        </div>
     </main>
     <footer>
         <!-- Footer -->
@@ -234,6 +175,7 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="./js/carrito.js"></script>
 <script src="./js/usuarios.js"></script>

@@ -1,4 +1,4 @@
-// let usuarios = []
+let usuarios = []
 let autos = []
 let prod = []
 let carrito = []
@@ -6,9 +6,7 @@ let storagge_carrito = []
 const clave = "carrito"
 
 
-// usuarios.push(new User("lucas", "lucas123", "badino", 26, "lucas@gmail.com"))
-// usuarios.push(new User("juan", "juan123", "perez", 31, "juan@gmail.com"))
-// usuarios.push(new User("pedro", "pedro123", "zapata", 26, "pedro@gmail.com"))
+usuarios.push(new User("lucas", "lucas123", "badino", 26, "lucas@gmail.com"))
 
 
 autos.push(new Auto(autos.length + 1, "Chevolet", "Prisma ltz manual", 2013, 3900000, "https://manasseroautos.com.ar/media/imagenes/getImagen/289/750/420/0"))
@@ -16,27 +14,46 @@ autos.push(new Auto(autos.length + 1, "Nissan", "Sentra Advance plus at", 2020, 
 autos.push(new Auto(autos.length + 1, "Chevolet", "cruze ltz plus at", 2017, 2000000, "https://cdn.motor1.com/images/mgl/1bRAw/s1/lanzamiento-chevrolet-cruze-lt-2020.jpg"))
 autos.push(new Auto(autos.length + 1, "Peugeot", "207 hdi allure", 2016, 1980000, "https://cdn.motor1.com/images/mgl/yMkRb/s1/lanzamiento-peugeot-207-compact-quiksilver.webp"))
 
+let bot = document.querySelector("#button")
+
+bot.addEventListener("click", () => {
+    Swal.fire({
+        title: 'Inicia Sesion',
+        html: `<input type="text" id="login" class="swal2-input" placeholder="Usuario">
+        <input type="password" id="password" class="swal2-input" placeholder="Contraseña">`,
+        confirmButtonText: 'Iniciar',
+        focusConfirm: false,
+        preConfirm: () => {
+            const login = Swal.getPopup().querySelector('#login').value
+            const password = Swal.getPopup().querySelector('#password').value
+            if (!login || !password) {
+                Swal.showValidationMessage(`No has ingresado ningun valor`)
+            }
+            return { login: login, password: password }
+        }
+    }).then((result) => {
+        if (result.value.login == usuarios[0].usuario && result.value.password == usuarios[0].contrasenia) {
+            let contenido = document.querySelector("#main")
+            let info = document.createElement("div")
+            info.innerHTML = contenido_html()
+            contenido.appendChild(info)
+            let ocultar = document.querySelector("#ocultar")
+            ocultar.innerHTML = ""
+            mostrar_datos_usuario()
+            mostrar_autos(autos)
+            alert_storage()
+            agregar_autos()
+            buscar()
+
+        } else {
+            toasty("Error Usuario No Existente", 2000)
+            
+        
+        }
+    })
+})
 
 
-
-// let bot = document.querySelector("#button")
-// let res = false
-// bot.addEventListener("click", () => {
-//     let user = document.querySelector("#user").value
-//     let pass = document.querySelector("#pass").value
-
-//     usuarios.forEach(e => {
-//         if (e.usuario == user && e.contrasenia == pass) {
-//             res = true;
-//         }
-//     })
-// })
-
-
-mostrar_autos(autos)
-alert_storage()
-agregar_autos()
-buscar()
 
 
 
@@ -228,10 +245,6 @@ function suma_totales() {
     total.appendChild(elem1)
 
     document.querySelector("#can").innerHTML = `Tienes ${cantidad} productos en tu carrito`
-    // let tex = document.createElement("span")
-    // tex.innerHTML = `Tienes ${cantidad} productos en tu carrito`
-    // canti.appendChild(tex)
-
 
 }
 
@@ -271,7 +284,7 @@ function alert_storage() {
         })
         swal({
             title: "Tienes Articulos En El Carrito",
-            text: `Dejaste ${cant} sin comprar, deseas acceder al carrito?`,
+            text: `Dejaste ${cant} sin comprar, deseas recuperarlo?`,
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -286,4 +299,55 @@ function alert_storage() {
             })
     }
 
+}
+function contenido_html() {
+    return `<div id="div" class="d-flex">
+
+    </div>
+    <h1 class="text-center"> Agregar un vehiculo</h1>
+    <div class="div-form">
+        <div class="input-group mb-3 ">
+            <input id="marca" type="text" class="form-control" placeholder="Marca" aria-label="Username"
+                aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3 ">
+            <input id="modelo" type="text" class="form-control" placeholder="Modelo" aria-label="Username"
+                aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3 ">
+            <input id="anio" type="number" class="form-control" placeholder="año" aria-label="Username"
+                aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3 ">
+            <input id="precio" type="number" class="form-control" placeholder="precio" aria-label="Username"
+                aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3 ">
+            <input id="imagen" type="text" class="form-control" placeholder="imagen (colocar url)"
+                aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+        <button id="btn-form" type="submit" class="btn btn-primary">Crear</button>
+    </div>
+    <div class="container mt-5 p-3 rounded cart1">
+        <div class="col-md-15">
+            <h6 class="mb-0">Carrito</h6>
+            <div class="d-flex justify-content-between"><span>
+                    <div id="can"> </div>
+                </span></div>
+            <div id="carr" class="product-details mr-2">
+                <div class="d-flex flex-row align-items-center"><i class="fa fa-long-arrow-left"></i><span
+                        class="ml-2">Continuar Compra</span></div>
+                <hr>
+            </div>
+            <div id="total" class="text-center">
+            </div>
+        </div>
+    </div>`;
+
+}
+function mostrar_datos_usuario(){
+    let datos = document.querySelector("#usuario")
+    datos.innerHTML = `
+    Bienvenido ${usuarios[0].apellido.toUpperCase()} ${usuarios[0].usuario.toUpperCase()}
+    `
 }
