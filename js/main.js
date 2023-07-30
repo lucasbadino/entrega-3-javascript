@@ -279,12 +279,12 @@ function alert_storage() {
         local = localStorage.getItem(clave)
         local = JSON.parse(local)
         local.forEach(e => {
-            cant++
+            cant += e.cantidad
             console.log(local)
         })
         swal({
             title: "Tienes Articulos En El Carrito",
-            text: `Dejaste ${cant} sin comprar, deseas recuperarlo?`,
+            text: `Dejaste ${cant} productos sin comprar, deseas recuperarlo?`,
             icon: "warning",
             buttons: true,
             dangerMode: true,
