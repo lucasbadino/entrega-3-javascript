@@ -98,10 +98,32 @@ function traer_item(id) {
     let precio = prod.querySelector("h6").textContent.substring(1, prod.querySelector("h6").textContent.length);
     let n_prod = new Carrito(id, marca, modelo, precio, img)
     agregar(n_prod)
-    console.log(n_prod)
-
 
 }
+
+function eliminar(id){
+    let exist = carrito.some(p => p.id == id)
+    carrito.forEach(e => {
+        if (e.cantidad <= 1 ){
+        carrito = carrito.filter(e => e.id != id)
+    }
+    })
+    
+    if (exist) {
+        carrito.map(p => {
+            if (p.id == id) {
+                p.cantidad--
+                return p;
+            } else {
+                return p;
+            }
+        })
+
+    } 
+    recorrer_carrito()
+
+}
+
 function agregar(auto) {
     let exist = carrito.some(p => p.id == auto.id)
     if (exist) {
@@ -132,6 +154,7 @@ function recorrer_carrito() {
         cantidad += e.cantidad
         let div = document.querySelector("#carr")
         let elem = document.createElement("div")
+        elem.id = "prod"+e.id
         elem.innerHTML = `
             <div class="d-flex flex-row align-items-center"><span class="text-black-50"></span>
             <div class="price ml-2"><span class="mr-1"></span><i class="fa fa-angle-down"></i>
@@ -140,11 +163,12 @@ function recorrer_carrito() {
             </div>
             <div class="d-flex justify-content-between align-items-center mt-3 p-2 items rounded">
             <div class="d-flex flex-row"><img class="rounded" src="${e.imagen}"
-            width="350">
+            width="300">
             <div class="ml-2"><span class="font-weight-bold d-block">${e.marca}</span><span
                 class="spec">${e.modelo}</span></div>
             </div>
-            <div class="d-flex flex-row align-items-center"><span class="d-block">${e.cantidad}</span><span
+            <a href="javascript:eliminar(${e.id})">-</a><a href="#" class="border">${e.cantidad}</a><a href="javascript:traer_item(${e.id})">+</a>
+            <div class="d-flex flex-row align-items-center"><span
             class="d-block ml-5 font-weight-bold">$${e.precio}</span><i
             class="fa fa-trash-o ml-3 text-black-50"></i></div>
             </div>
@@ -157,10 +181,12 @@ function recorrer_carrito() {
 
 }
 function suma_totales() {
+    let cantidad = 0
     let suma_total = 0
     carrito.forEach(e => {
+        cantidad += e.cantidad;
         if (e.cantidad > 1) {
-            suma_total += (e.precio * e.cantidad)
+            suma_total += parseInt((e.precio * e.cantidad))
         } else {
             suma_total += parseInt(e.precio)
         }
@@ -173,6 +199,11 @@ function suma_totales() {
     }
     elem1.innerHTML = `Total $ ${suma_total}`
     total.appendChild(elem1)
+
+    document.querySelector("#can").innerHTML = `Tienes ${cantidad} productos en tu carrito`
+    // let tex = document.createElement("span")
+    // tex.innerHTML = `Tienes ${cantidad} productos en tu carrito`
+    // canti.appendChild(tex)
 
     
 }
